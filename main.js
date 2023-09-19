@@ -45,10 +45,9 @@ let valor = prompt(
 );
 
 if (valor == 1) {
-  while (seguir == 1) {
+  while (seguir === 1) {
     let num = random(v1, v6);
     imgDados(num);
-    // console.log("Tu numero es " + num);
 
     seguir = prompt(
       " " +
