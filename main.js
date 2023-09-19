@@ -41,7 +41,7 @@ let valor = prompt(
   "SIMULADOR DE TIRAR DADOS \n \n" +
     "NOMBRE DEL JUGADOR : " +
     nombreJugador.toUpperCase() +
-    " \n \n \n 1 TIRAR EL DADO \n 2 SALIR \n \n"
+    " \n \n \n 1 TIRAR EL DADO \n CUALQUIER OTRA TECLA SALIR \n \n"
 );
 
 if (valor == 1) {
