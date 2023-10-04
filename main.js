@@ -1,70 +1,58 @@
-// -------------------FUNCIONES----------------
+// EL JUEGO CONSISTE EN UN SIMULADOR DE TIRAR DADOS.
+// LAS REGLAS SON FACILES, EL DADO SE VA TIRANDO HASTA QUE EL JUGADOR LE TOQUE DOS VECES EL NUMERO 1.
+// UNA VEZ QUE EL JUGADOR LE TOCA DOS VECES 1 LE TOCA AL SIGUIENTE JUGADOR
+// EL QUE JUNTE MAS PUNTAJE EN TODOS SUS LANZAMIENTOS !GANA!
 
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-function imgDados(numero) {
-  if (numero == 1) {
-    alert(
-      " +=======+ \n |                    | \n |         X         | \n |                    | \n +=======+"
-    );
-  } else if (numero == 2) {
-    alert(
-      " +=======+ \n |         X         | \n |                    | \n |         X         | \n +=======+"
-    );
-  } else if (numero == 3) {
-    alert(
-      " +=======+ \n |         X         | \n |         X         | \n |         X         | \n +=======+"
-    );
-  } else if (numero == 4) {
-    alert(
-      " +=======+ \n |    X         X   | \n |                     | \n |    X         X   | \n +=======+"
-    );
-  } else if (numero == 5) {
-    alert(
-      " +=======+ \n |    X         X   | \n |         X         | \n |    X         X   | \n +=======+"
-    );
-  } else if (numero == 6) {
-    alert(
-      " +=======+ \n |    X         X   | \n |    X         X   | \n |    X         X   | \n +=======+"
-    );
+// FUNCIONES //
+import { random, imgDados } from "./funciones.js";
+
+// CREANDO CLASE DE JUGADORES CON UN METODO PARA SUMAR LOS PUNTOS
+import { Jugador } from "./clases.js";
+
+// ARRANCA EL PROGRAMA
+
+let fin = "S";
+
+while (fin) {
+  const jugadores = [];
+  for (let i = 0; i < 2; i++) {
+    alert(`INGRESE LOS DATOS DEL JUGADOR ${i + 1}`);
+    let nombre = prompt("Nombre");
+    let edad = "";
+    do {
+      edad = parseInt(prompt("Edad"));
+    } while (isNaN(edad));
+    jugadores.push(new Jugador(nombre, edad, 0));
   }
-}
-// ----------------------PROGRAMA-----------------------
-
-let v1 = 1,
-  v6 = 6;
-let seguir = 1;
-
-let nombreJugador = prompt(" SIMULADOR DE TIRAR DADOS \n INGRESE SU NOMBRE \n");
-let valor = prompt(
-  "SIMULADOR DE TIRAR DADOS \n \n" +
-    "NOMBRE DEL JUGADOR : " +
-    nombreJugador.toUpperCase() +
-    " \n \n \n 1 TIRAR EL DADO \n CUALQUIER OTRA TECLA SALIR \n \n"
-);
-
-if (valor == 1) {
-  while (seguir == 1) {
-    let num = random(v1, v6);
-    imgDados(num);
-
-    seguir = prompt(
-      " " +
-        nombreJugador.toUpperCase() +
-        " EL DADO DIO " +
-        num +
-        "\n \n 1 PARA SEGUIR TIRANDO \n \n 0 PARA SALIR"
-    );
-
-    if (seguir != 0 && seguir != 1) {
-      seguir = prompt(
-        " LA OPCION INGRESADA ES INCORRECTA \n  VUELVA A INGRESAR UNA OPCION \n \n 1 PARA SEGUIR TIRANDO \n \n CUALQUIER CARACTER PARA SALIR"
-      );
+  for (let i = 0; i < 2; i++) {
+    let cont = 0;
+    while (cont < 2) {
+      alert(`Tira el jugador ${i + 1}`);
+      let num = random(1, 6);
+      imgDados(num);
+      jugadores[i].sumarPuntos(num);
+      if (num === 1) {
+        cont++;
+      }
     }
   }
-} else {
-  alert("Esta por salir ");
+
+  alert("EL SIMULADOR A TERMINADO");
+  console.log(jugadores);
+
+  if (jugadores[0].puntaje > jugadores[1].puntaje) {
+    alert(
+      `EL GANADOR DEL JUEGO ES EL JUGADOR ${jugadores[0].nombre} \n CON UN PUNTAJE DE ${jugadores[0].puntaje}`
+    );
+  } else {
+    alert(
+      `EL GANADOR DEL JUEGO ES EL JUGADOR ${jugadores[1].nombre} \n CON UN PUNTAJE DE ${jugadores[1].puntaje}`
+    );
+  }
+
+  fin = prompt(
+    "SI DESEA JUGAR NUEVAMENTE PRESIONE CUALQUIER LETRAS \nSI DESEA SALIR PRESIONE ENTER"
+  );
 }
 
-alert("Esta por salir ");
+alert("EL JUEGO A FINALIZADO, MUCHAS GRACIAS POR JUGAR!!!");
