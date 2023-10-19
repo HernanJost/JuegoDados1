@@ -1,16 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de dados</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <title>Document</title>
 </head>
 
 <body>
-    <h1>Juego de dados</h1>
+    <h1>DADOS Y CODICIA</h1>
 
+    <section class="input-jugadores">
+        <div class="Jugador1">
+            <h3>Jugador 1</h3>
+            <form>
+                <input placeholder="Nombre" type="text" id="nombre1" name="nombre">
+                <input placeholder="Edad" type="number" id="edad1" name="edad">
+            </form>
+        </div>
+        <div class="Jugador2">
+            <h3>Jugador 2</h3>
+            <form>
+                <input placeholder="Nombre" type="text" id="nombre2" name="nombre">
+                <input placeholder="Edad" type="number" id="edad2" name="edad">
+            </form>
+        </div>
+        <br>
+        <input id="btnFormulario" type="submit" value="Enviar" />
+    </section>
+    <br>
+    <br>
+    <button id="botonJugar">JUGAR</button>
+    <div>
+        <br>
+        <h3>JUEGO</h3>
+        <br>
+        <div id="cartelNombre"></div>
+        <div id="imagenDados"></div>
 
+    </div>
 
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./main.js" type="module"></script>
 </body>
 

@@ -1,58 +1,95 @@
-// EL JUEGO CONSISTE EN UN SIMULADOR DE TIRAR DADOS.
-// LAS REGLAS SON FACILES, EL DADO SE VA TIRANDO HASTA QUE EL JUGADOR LE TOQUE DOS VECES EL NUMERO 1.
-// UNA VEZ QUE EL JUGADOR LE TOCA DOS VECES 1 LE TOCA AL SIGUIENTE JUGADOR
-// EL QUE JUNTE MAS PUNTAJE EN TODOS SUS LANZAMIENTOS !GANA!
+import { Jugador } from "./clases.js";
+// FUNCIONES
 
-// FUNCIONES //
 import { random, imgDados } from "./funciones.js";
 
-// CREANDO CLASE DE JUGADORES CON UN METODO PARA SUMAR LOS PUNTOS
-import { Jugador } from "./clases.js";
+function enviarFormulario(event) {
+  //asigna elemtos del input a variables
+  let nombre1 = document.getElementById("nombre1").value;
+  let edad1 = document.getElementById("edad1").value;
+  let nombre2 = document.getElementById("nombre2").value;
+  let edad2 = document.getElementById("edad2").value;
 
-// ARRANCA EL PROGRAMA
+  //verifica que los campos esten completos
+  if (nombre1 === "" || edad1 === "" || nombre2 === "" || edad2 === "") {
+    alert("Por favor, completa todos los campos.");
+    event.preventDefault(); // Cancelar el envío del formulario
+  } else {
+    //Agrega al array los objetos de jugadores
+    jugadores.push(new Jugador(nombre1, edad1, 0));
+    jugadores.push(new Jugador(nombre2, edad2, 0));
 
-let fin = "S";
-
-while (fin) {
-  const jugadores = [];
-  for (let i = 0; i < 2; i++) {
-    alert(`INGRESE LOS DATOS DEL JUGADOR ${i + 1}`);
-    let nombre = prompt("Nombre");
-    let edad = "";
-    do {
-      edad = parseInt(prompt("Edad"));
-    } while (isNaN(edad));
-    jugadores.push(new Jugador(nombre, edad, 0));
+    const guardarSesion = (clave, valor) => {
+      sessionStorage.setItem(clave, valor);
+    };
+    for (const jugador of jugadores) {
+      guardarSesion(jugador.nombre, JSON.stringify(jugadores));
+    }
+    //Elimina de la pantalla el formulario una vez completado los jugadores
+    eliminarElemento();
   }
-  for (let i = 0; i < 2; i++) {
-    let cont = 0;
-    while (cont < 2) {
-      alert(`Tira el jugador ${i + 1}`);
-      let num = random(1, 6);
-      imgDados(num);
-      jugadores[i].sumarPuntos(num);
-      if (num === 1) {
-        cont++;
+}
+// funcion para eliminar la seccion del formulario
+function eliminarElemento() {
+  let elemento = document.querySelector(".input-jugadores");
+  if (elemento) {
+    elemento.remove();
+  }
+}
+//INICIA EL JUEGO
+
+//creo array de objetos jugadores
+const jugadores = [];
+const btnFormulario = document.querySelector("#btnFormulario");
+
+//agrego al evento click en el boton para enviar el formulario
+btnFormulario.onclick = enviarFormulario;
+console.log(jugadores);
+
+const botonJuego = document.querySelector("#botonJugar");
+botonJuego.onclick = function () {
+  let fin = true;
+
+  while (fin) {
+    // let codicia = [true, true];
+
+    for (let x = 0; x < 5; x++) {
+      for (let i = 0; i < 2; i++) {
+        let cont = 0,
+          puntosRonda = 0;
+        // seguir = true;
+        while (cont < 2) {
+          let contenidoNombreJugador = `Tira el jugador ${jugadores[i].nombre}`;
+          let nombreJugador = document.querySelector("#cartelNombre");
+          nombreJugador.textContent = contenidoNombreJugador;
+          let num = random(1, 6);
+          imgDados(num);
+          puntosRonda += num;
+          if (num === 1) {
+            cont++;
+          }
+          // if (cont != 2) {
+          //   seguir = confirm("SE ARRIESGA A SEGUIR TIRANDO?");
+          // } else {
+          //   puntosRonda = Math.round(puntosRonda / 2);
+          //   codicia[i] = false;
+          // }
+        }
+        jugadores[i].sumarPuntos(puntosRonda);
       }
     }
+
+    // for (let i = 0; i < 2; i++) {
+    //   if (codicia) {
+    //     jugadores[i].sumarPuntos(10);
+    //   }
+    // }
+
+    alert("EL JUEGO A TERMINADO");
+    console.log(jugadores);
+    fin = false;
   }
 
-  alert("EL SIMULADOR A TERMINADO");
-  console.log(jugadores);
-
-  if (jugadores[0].puntaje > jugadores[1].puntaje) {
-    alert(
-      `EL GANADOR DEL JUEGO ES EL JUGADOR ${jugadores[0].nombre} \n CON UN PUNTAJE DE ${jugadores[0].puntaje}`
-    );
-  } else {
-    alert(
-      `EL GANADOR DEL JUEGO ES EL JUGADOR ${jugadores[1].nombre} \n CON UN PUNTAJE DE ${jugadores[1].puntaje}`
-    );
-  }
-
-  fin = prompt(
-    "SI DESEA JUGAR NUEVAMENTE PRESIONE CUALQUIER LETRAS \nSI DESEA SALIR PRESIONE ENTER"
-  );
-}
-
-alert("EL JUEGO A FINALIZADO, MUCHAS GRACIAS POR JUGAR!!!");
+  // let num = random(1, 6);
+  // imgDados(num);
+};
