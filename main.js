@@ -48,6 +48,9 @@ console.log(jugadores);
 
 const botonJuego = document.querySelector("#botonJugar");
 botonJuego.onclick = function () {
+  jugadores.forEach((jugador) => {
+    jugador.reiniciarPuntaje();
+  });
   let fin = true;
 
   while (fin) {
@@ -68,28 +71,13 @@ botonJuego.onclick = function () {
           if (num === 1) {
             cont++;
           }
-          // if (cont != 2) {
-          //   seguir = confirm("SE ARRIESGA A SEGUIR TIRANDO?");
-          // } else {
-          //   puntosRonda = Math.round(puntosRonda / 2);
-          //   codicia[i] = false;
-          // }
         }
         jugadores[i].sumarPuntos(puntosRonda);
       }
     }
 
-    // for (let i = 0; i < 2; i++) {
-    //   if (codicia) {
-    //     jugadores[i].sumarPuntos(10);
-    //   }
-    // }
-
     alert("EL JUEGO A TERMINADO");
     console.log(jugadores);
     fin = false;
   }
-
-  // let num = random(1, 6);
-  // imgDados(num);
 };
