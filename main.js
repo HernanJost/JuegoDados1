@@ -19,12 +19,6 @@ function enviarFormulario(event) {
     jugadores.push(new Jugador(nombre1, edad1, 0));
     jugadores.push(new Jugador(nombre2, edad2, 0));
 
-    const guardarSesion = (clave, valor) => {
-      sessionStorage.setItem(clave, valor);
-    };
-    for (const jugador of jugadores) {
-      guardarSesion(jugador.nombre, JSON.stringify(jugadores));
-    }
     //Elimina de la pantalla el formulario una vez completado los jugadores
     eliminarElemento();
   }
@@ -43,41 +37,59 @@ const jugadores = [];
 const btnFormulario = document.querySelector("#btnFormulario");
 
 //agrego al evento click en el boton para enviar el formulario
-btnFormulario.onclick = enviarFormulario;
+btnFormulario.onclick = function () {
+  enviarFormulario();
+  botonTirar.removeAttribute("disabled");
+};
 console.log(jugadores);
 
-const botonJuego = document.querySelector("#botonJugar");
-botonJuego.onclick = function () {
-  jugadores.forEach((jugador) => {
-    jugador.reiniciarPuntaje();
-  });
-  let fin = true;
+let num = 0,
+  contVueltas = 0;
+const botonTirar = document.querySelector("#botonTirar");
+botonTirar.onclick = function () {
+  contVueltas++;
+  num = random(1, 6);
+  imgDados(num);
+  console.log(num);
 
-  while (fin) {
-    // let codicia = [true, true];
+  if (contVueltas <= 10) {
+    if (contVueltas <= 5) {
+      let contenidoNombreJugador = `Tira el jugador ${jugadores[0].nombre}`;
+      let nombreJugador = document.querySelector("#cartelNombre");
+      nombreJugador.textContent = contenidoNombreJugador;
 
-    for (let x = 0; x < 5; x++) {
-      for (let i = 0; i < 2; i++) {
-        let cont = 0,
-          puntosRonda = 0;
-        // seguir = true;
-        while (cont < 2) {
-          let contenidoNombreJugador = `Tira el jugador ${jugadores[i].nombre}`;
-          let nombreJugador = document.querySelector("#cartelNombre");
-          nombreJugador.textContent = contenidoNombreJugador;
-          let num = random(1, 6);
-          imgDados(num);
-          puntosRonda += num;
-          if (num === 1) {
-            cont++;
-          }
-        }
-        jugadores[i].sumarPuntos(puntosRonda);
-      }
+      jugadores[0].sumarPuntos(num);
+    } else {
+      let contenidoNombreJugador = `Tira el jugador ${jugadores[1].nombre}`;
+      let nombreJugador = document.querySelector("#cartelNombre");
+      nombreJugador.textContent = contenidoNombreJugador;
+      jugadores[1].sumarPuntos(num);
     }
-
-    alert("EL JUEGO A TERMINADO");
+  }
+  if (contVueltas == 10) {
+    botonTirar.remove();
     console.log(jugadores);
-    fin = false;
+    alert("El juego termino");
+    //separo el array por jugadores individuales y lo guardo en el sesionstorage
+    jugadores.forEach((jugador) => {
+      let clave = jugador.nombre;
+      sessionStorage.setItem(clave, JSON.stringify(jugador));
+    });
+  }
+  let clave1 = jugadores[0].nombre;
+  let clave2 = jugadores[1].nombre;
+  let objeto1 = JSON.parse(sessionStorage.getItem(clave1));
+  let objeto2 = JSON.parse(sessionStorage.getItem(clave2));
+  // Compara los datos de los objetos
+  if (objeto1 && objeto2) {
+    if (objeto1.puntaje > objeto2.puntaje) {
+      let contenidoNombreJugador = `El ganador es ${jugadores[0].nombre}`;
+      let ganador = document.querySelector("#nombreGanador");
+      ganador.textContent = contenidoNombreJugador;
+    } else {
+      let contenidoNombreJugador = `El ganador es ${jugadores[1].nombre}`;
+      let ganador = document.querySelector("#nombreGanador");
+      ganador.textContent = contenidoNombreJugador;
+    }
   }
 };

@@ -7,4 +7,7 @@ export class Jugador {
   sumarPuntos(valor) {
     this.puntaje += valor;
   }
+  reiniciarPuntaje() {
+    this.puntaje = 0;
+  }
 }
