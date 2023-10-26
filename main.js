@@ -86,8 +86,12 @@ botonTirar.onclick = function () {
       let contenidoNombreJugador = `El ganador es ${jugadores[0].nombre}`;
       let ganador = document.querySelector("#nombreGanador");
       ganador.textContent = contenidoNombreJugador;
-    } else {
+    } else if (objeto2.puntaje > objeto1.puntaje) {
       let contenidoNombreJugador = `El ganador es ${jugadores[1].nombre}`;
+      let ganador = document.querySelector("#nombreGanador");
+      ganador.textContent = contenidoNombreJugador;
+    } else {
+      let contenidoNombreJugador = `El resultado es empate`;
       let ganador = document.querySelector("#nombreGanador");
       ganador.textContent = contenidoNombreJugador;
     }
